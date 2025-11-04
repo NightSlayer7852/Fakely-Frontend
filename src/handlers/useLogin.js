@@ -24,9 +24,9 @@ function useLogin() {
             .then((data) => {
                 console.log("Login successful:", data);
                 loginUser(data.user, data.access, data.refresh);
-                
-                navigate("/home");                    
-                
+
+                navigate("/review");
+
             })
             .catch((error) => {
                 console.error("Login error:", error);

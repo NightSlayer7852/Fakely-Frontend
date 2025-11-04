@@ -23,9 +23,9 @@ function useSignup() {
             .then((data) => {
                 console.log("Signup successful:", data);
                 loginUser(data.user, data.access, data.refresh);
-                
+
                 navigate("/home");
-                
+
             })
             .catch((error) => {
                 console.error("Signup error:", error);
