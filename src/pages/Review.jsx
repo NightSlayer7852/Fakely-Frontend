@@ -1,49 +1,63 @@
-import useReview from '../handlers/useReview.js';
+// src/pages/ReviewPage.jsx
 
-function Review() {
-    const {
-        isLoading,
-        title,
-        setTitle,
-        text,
-        setText,
-        error,
-        handleSubmit
-    } = useReview();
+import React, { useEffect, useState } from 'react';
+import Sidebar from '../components/layout/SideBar.jsx';
+import ReviewForm from '../components/ui/ReviewForm.jsx';
+import { getReviews } from '../api/review'; // Assumed path
+
+export default function ReviewPage() {
+    const [reviews, setReviews] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Function to fetch reviews from the backend
+    const fetchReviews = async () => {
+        try {
+            const data = await getReviews();
+            setReviews(data);
+        } catch (error) {
+            console.error("Error fetching reviews list:", error);
+            // You might want to display a list error here
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // 🔑 Run once on mount to fetch initial reviews
+    useEffect(() => {
+        fetchReviews();
+    }, []);
+
+    // Handler to update the list after a successful new submission
+    const handleNewReview = (newReviewData) => {
+        // Prepend the new review to the local state for immediate display
+        setReviews(prevReviews => [newReviewData, ...prevReviews]);
+        setSearchTerm(''); // Clear search to show the new review
+    };
+
+    // Filter reviews for the sidebar display
+    const filteredReviews = reviews.filter(review =>
+        review.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        review.text.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <div className="max-w-md mx-auto p-4">
-            <h2 className="text-xl font-bold mb-4">Submit Review</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    required
+        <div className="flex h-screen overflow-hidden bg-gray-100">
+
+            {/* 1. Sidebar Component (Protected List) */}
+            <div className="flex-shrink-0">
+                <Sidebar
+                    reviews={filteredReviews}
+                    onSearchChange={setSearchTerm}
+                    searchTerm={searchTerm}
+                    isListLoading={isLoading}
                 />
+            </div>
 
-                <textarea
-                    placeholder="Review Text"
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded h-32"
-                    required
-                ></textarea>
-
-                {error && <p className="text-red-500 text-sm">{error}</p>}
-
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full bg-blue-500 text-white p-2 rounded disabled:opacity-50"
-                >
-                    {isLoading ? 'Submitting...' : 'Submit Review'}
-                </button>
-            </form>
+            {/* 2. Main Content Area (Submission Form) */}
+            <div className="flex-grow p-8 overflow-y-auto">
+                <ReviewForm onReviewSubmitted={handleNewReview} />
+            </div>
         </div>
     );
 }
-
-export default Review;

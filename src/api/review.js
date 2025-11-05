@@ -1,11 +1,14 @@
 import api from './api.js';
-
+import { getCsrfToken, getCsrfConfig } from '../api/auth.js';
 export const postReview = async (title, text) => {
     try {
+        const csrfToken = await getCsrfToken();
+        const config = getCsrfConfig(csrfToken);
         const response = await api.post(`/api/v1/reviews/`, {
             title,
             text,
-        });
+        }
+        , config);
         return response.data;
     } catch (error) {
         throw error;
@@ -31,8 +34,10 @@ export const getReviewById = async (id) => {
 };
 
 export const deleteReview = async (id) => {
+    const csrfToken = await getCsrfToken();
+    const config = getCsrfConfig(csrfToken);
     try {
-        const response = await api.delete(`/api/v1/reviews/${id}/`);
+        const response = await api.delete(`/api/v1/reviews/${id}/`, config);
         return response.data;
     } catch (error) {
         throw error;

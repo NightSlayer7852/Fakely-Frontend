@@ -26,13 +26,11 @@ function useReview() {
                 setText('');
             })
             .catch((err) => {
-                console.error("Full server error response data:", err.response?.data); // <--- LOG THIS
-
+                console.error("Full server error response data:", err.response?.data);
                 // Attempt to extract a user-friendly error message
                 let errorMessage = "Submission failed.";
 
                 if (err.response && err.response.data) {
-                    // If the server sends an object like { "title": ["This field is required."] }
                     const firstError = Object.values(err.response.data)[0];
                     errorMessage = Array.isArray(firstError) ? firstError[0] : firstError;
                 }
