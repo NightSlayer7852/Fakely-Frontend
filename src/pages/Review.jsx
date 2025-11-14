@@ -1,8 +1,10 @@
 // src/pages/ReviewPage.jsx
 
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../components/layout/SideBar.jsx';
-import ReviewForm from '../components/ui/ReviewForm.jsx';
+import Navbar from '../components/layout/Navbar.jsx';
+import Footer from '../components/layout/Footer.jsx';
+import Sidebar from '../components/layout/SideBar.jsx'; // Assumed path
+import ReviewForm from '../components/ui/ReviewForm.jsx'; // Assumed path
 import { getReviews } from '../api/review'; // Assumed path
 
 export default function ReviewPage() {
@@ -10,53 +12,59 @@ export default function ReviewPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
-    // Function to fetch reviews from the backend
     const fetchReviews = async () => {
         try {
             const data = await getReviews();
             setReviews(data);
         } catch (error) {
             console.error("Error fetching reviews list:", error);
-            // You might want to display a list error here
         } finally {
             setIsLoading(false);
         }
     };
 
-    // 🔑 Run once on mount to fetch initial reviews
     useEffect(() => {
         fetchReviews();
-    }, []);
+    }, [reviews]);
 
-    // Handler to update the list after a successful new submission
     const handleNewReview = (newReviewData) => {
-        // Prepend the new review to the local state for immediate display
         setReviews(prevReviews => [newReviewData, ...prevReviews]);
-        setSearchTerm(''); // Clear search to show the new review
+        setSearchTerm('');
     };
 
-    // Filter reviews for the sidebar display
-    const filteredReviews = reviews.filter(review =>
-        review.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        review.text.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Filter reviews with safety checks
+    const filteredReviews = reviews.filter(review => {
+        if (!review) return false;
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        const titleMatch = review.title?.toLowerCase().includes(lowerSearchTerm) || false;
+        const textMatch = review.text?.toLowerCase().includes(lowerSearchTerm) || false;
+        return titleMatch || textMatch;
+    });
 
     return (
-        <div className="flex h-screen overflow-hidden bg-gray-100">
+        // Main container must be flex-col for Navbar/Footer
+        <div className="flex flex-col min-h-screen">
 
-            {/* 1. Sidebar Component (Protected List) */}
-            <div className="flex-shrink-0">
-                <Sidebar
-                    reviews={filteredReviews}
-                    onSearchChange={setSearchTerm}
-                    searchTerm={searchTerm}
-                    isListLoading={isLoading}
-                />
-            </div>
+            <Navbar />
 
-            {/* 2. Main Content Area (Submission Form) */}
-            <div className="flex-grow p-8 overflow-y-auto">
-                <ReviewForm onReviewSubmitted={handleNewReview} />
+            <div className="flex flex-grow overflow-hidden bg-gray-100">
+
+                {/* 1. Sidebar Component */}
+                <div className="flex-shrink-0">
+                    <Sidebar
+                        reviews={filteredReviews}
+                        onSearchChange={setSearchTerm}
+                        searchTerm={searchTerm}
+                        isListLoading={isLoading}
+                    />
+                </div>
+
+                {/* 2. Main Content Area */}
+                <main className="flex-grow p-8 overflow-y-auto bg-gray-100">
+                    <div className="max-w-4xl mx-auto">
+                        <ReviewForm onReviewSubmitted={handleNewReview} />
+                    </div>
+                </main>
             </div>
         </div>
     );

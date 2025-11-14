@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import toast from 'react-hot-toast';
 
 function useLogin() {
     const navigate = useNavigate();
-    const { loginUser } = useAuth(); // Get global state setter
+    const { loginUser } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [username, setUsername] = useState("");
@@ -21,12 +22,13 @@ function useLogin() {
 
         login(username, password)
             .then((data) => {
-                // Data contains { user: {...}, message: "..." }
-                loginUser(data.user); // Update global state
-                navigate("/review"); // Navigate to protected page
+                loginUser(data.user);
+                toast.success(data?.message || "Login successful!");
+                navigate("/home");
             })
             .catch((err) => {
                 const errorMessage = err.response?.data?.error || "Login failed. Check credentials.";
+                toast.error(errorMessage);
                 setError(errorMessage);
             })
             .finally(() => {

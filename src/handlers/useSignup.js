@@ -7,7 +7,6 @@ import { useAuth } from "../contexts/AuthContext.jsx";
 
 function useSignup() {
     const navigate = useNavigate();
-    // 🔑 Get the global state update function
     const { loginUser } = useAuth();
 
     // Local states for form inputs and process status
