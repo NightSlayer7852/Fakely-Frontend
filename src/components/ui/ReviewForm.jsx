@@ -1,14 +1,7 @@
 // src/components/ui/ReviewForm.jsx
 
 import React from 'react';
-import useReview from '../../handlers/useReview.js'; // Assumed path
-
-// Define color constants
-const ACCENT_COLOR = 'text-orange-700';
-const PRIMARY_BUTTON_BG = 'bg-orange-600';
-const PRIMARY_BUTTON_HOVER = 'hover:bg-orange-700';
-const FOCUS_RING = 'focus:ring-yellow-500';
-const FOCUS_BORDER = 'focus:border-yellow-500';
+import useReview from '../../handlers/useReview.js';
 
 export default function ReviewForm({ onReviewSubmitted }) {
     const {
@@ -33,43 +26,35 @@ export default function ReviewForm({ onReviewSubmitted }) {
     };
 
     return (
-        // Clean white card with soft shadow
-        <div className="max-w-xl bg-white p-8 rounded-xl shadow-2xl border border-gray-100 transition-shadow duration-300">
+        <div className="max-w-xl bg-secondary p-8 rounded-xl  h-100 w-150 shadow-md shadow-secondary flex flex-col items-center overflow-hidden ">
 
-            {/* Header: Deep Orange Accent */}
-            <h2 className={`text-3xl font-extrabold ${ACCENT_COLOR} mb-6`}>Submit New Review</h2>
+            <h2 className={`text-3xl font-extrabold text-secondary-content mb-6`}>Submit New Review</h2>
 
-            <form onSubmit={handleFormSubmit} className="space-y-5">
+            <form onSubmit={handleFormSubmit} className="space-y-5 w-100 flex flex-col items-center">
 
-                {/* Title Input */}
                 <input
                     type="text"
                     placeholder="Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    // Input Style: Soft neutral background, strong yellow focus ring
-                    className={`w-full p-4 border border-gray-300 rounded-lg bg-gray-50 text-gray-800 focus:ring-2 ${FOCUS_RING} ${FOCUS_BORDER} focus:outline-none transition-all duration-200`}
+                    className={`input input-secondary w-full`}
                     required
                 />
 
-                {/* Text Area Input */}
                 <textarea
                     placeholder="Review Text"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
-                    // Textarea Style: Matches input style
-                    className={`w-full p-4 border border-gray-300 rounded-lg h-32 resize-none bg-gray-50 text-gray-800 focus:ring-2 ${FOCUS_RING} ${FOCUS_BORDER} focus:outline-none transition-all duration-200`}
+                    className={`textarea textarea-secondary w-full h-40`}
                     required
                 ></textarea>
 
                 {error && <p className="text-red-600 text-sm mt-2 font-medium">{error}</p>}
 
-                {/* Submit Button */}
                 <button
                     type="submit"
                     disabled={isLoading}
-                    // Button Style: Strong orange with hover state
-                    className={`w-full ${PRIMARY_BUTTON_BG} text-white p-4 rounded-xl font-bold text-lg ${PRIMARY_BUTTON_HOVER} disabled:opacity-60 transition-all duration-200 transform active:scale-[0.99]`}
+                    className={`btn btn-base w-1/2`}
                 >
                     {isLoading ? 'Submitting...' : 'Submit Review'}
                 </button>

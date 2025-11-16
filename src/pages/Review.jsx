@@ -1,11 +1,10 @@
 // src/pages/ReviewPage.jsx
 
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/layout/Navbar.jsx';
-import Footer from '../components/layout/Footer.jsx';
-import Sidebar from '../components/layout/SideBar.jsx'; // Assumed path
-import ReviewForm from '../components/ui/ReviewForm.jsx'; // Assumed path
-import { getReviews } from '../api/review'; // Assumed path
+import Sidebar from '../components/layout/SideBar.jsx';
+import ReviewForm from '../components/ui/ReviewForm.jsx';
+import { getReviews } from '../api/review';
+import ToggleButton from '../components/ui/ToggleButton.jsx';
 
 export default function ReviewPage() {
     const [reviews, setReviews] = useState([]);
@@ -42,15 +41,12 @@ export default function ReviewPage() {
     });
 
     return (
-        // Main container must be flex-col for Navbar/Footer
-        <div className="flex flex-col min-h-screen">
-
-            <Navbar />
-
-            <div className="flex flex-grow overflow-hidden bg-gray-100">
-
-                {/* 1. Sidebar Component */}
-                <div className="flex-shrink-0">
+        <>
+            <div className="absolute top-4 right-4 z-50 ">
+                <ToggleButton />
+            </div>
+            <div className="flex bg-base-200 overflow-hidden">
+                <div className="flex-none h-screen overflow-y-auto bg-base-300 motion-preset-slide-right motion-duration-2000 border-2 rounded-r-xl">
                     <Sidebar
                         reviews={filteredReviews}
                         onSearchChange={setSearchTerm}
@@ -59,13 +55,10 @@ export default function ReviewPage() {
                     />
                 </div>
 
-                {/* 2. Main Content Area */}
-                <main className="flex-grow p-8 overflow-y-auto bg-gray-100">
-                    <div className="max-w-4xl mx-auto">
-                        <ReviewForm onReviewSubmitted={handleNewReview} />
-                    </div>
-                </main>
-            </div>
-        </div>
+                <div className="flex flex-auto justify-center items-center p-6 motion-preset-shrink ">
+                    <ReviewForm onReviewSubmitted={handleNewReview} />
+                </div>
+            </div></>
+
     );
 }

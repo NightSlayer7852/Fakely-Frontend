@@ -6,7 +6,7 @@ export default function PrivateRoute() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
     if (!isAuthenticated) {
-        return <Navigate to="/" replace />; // Redirect to Auth page
+        return <Navigate to="/" replace />;
     }
     return <Outlet />;
 }

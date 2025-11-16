@@ -60,7 +60,7 @@ export default function Navbar() {
                 {isAuthenticated ? (
                     <button
                         onClick={handleLogout}
-                        className={`btn btn-primary`}
+                        className={`btn btn-secondary`}
                     >
                         Logout
                     </button>

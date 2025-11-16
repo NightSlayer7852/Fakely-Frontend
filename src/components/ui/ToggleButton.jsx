@@ -19,7 +19,7 @@ export default function ToggleButton() {
     };
 
     return (
-        <label className="swap swap-rotate" aria-label="Theme toggle">
+        <label className="swap swap-rotate motion-preset-pulse motion-duration-2000" aria-label="Theme toggle">
             <input
                 type="checkbox"
                 className="theme-controller"

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import useLogin from '../handlers/useLogin';
 import useSignup from '../handlers/useSignup';
 import ToggleButton from '../components/ui/ToggleButton';
+import BackgroundBeamsWithCollision from '../components/ui/BackgroundBeamsWithCollision';
 
 function Auth() {
     const [activeTab, setActiveTab] = useState('login');
@@ -10,15 +11,18 @@ function Auth() {
     const { isLoading: isSignupLoading, error: signupError, username: signupUsername, setUsername: setSignupUsername, email, setEmail, password: signupPassword, setPassword: setSignupPassword, password2, setPassword2, handleSignup } = useSignup();
 
     return (
+        
         <div className="relative flex items-center justify-center min-h-screen bg-base-100 overflow-hidden">
-
-
-            <div className="relative w-full max-w-md bg-base-200 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border-neutral border-2">
+            <BackgroundBeamsWithCollision className="min-h-screen container items-center justify-center bg-base-100">
+            <div className="absolute top-4 right-4 z-50">
+                <ToggleButton />
+            </div>
+            <div className="relative w-full max-w-md bg-secondary rounded-2xl shadow-2xl p-8 motion-preset-expand">
                 <div className="flex border-b border-neutral mb-8">
                     <button
                         className={`flex-1 py-3 px-4 text-center font-semibold transition-all duration-300 ${activeTab === 'login'
-                            ? 'text-primary border-b-2 border-accent'
-                            : 'text-accent hover:text-primary'
+                            ? 'text-secondary-content border-b-2 border-neutral'
+                            : 'text-secondary-content hover:text-primary-content'
                             }`}
                         onClick={() => setActiveTab('login')}
                     >
@@ -26,8 +30,8 @@ function Auth() {
                     </button>
                     <button
                         className={`flex-1 py-3 px-4 text-center font-semibold transition-all duration-300 ${activeTab === 'signup'
-                            ? 'text-primary border-b-2 border-accent'
-                            : 'text-accent hover:text-primary'
+                            ? 'text-secondary-content border-b-2 border-neutral'
+                            : 'text-secondary-content hover:text-primary-content'
                             }`}
                         onClick={() => setActiveTab('signup')}
                     >
@@ -37,9 +41,9 @@ function Auth() {
 
                 {activeTab === 'login' && (
                     <div className="animate-fadeIn space-y-2">
-                        <h1 className="text-primary text-3xl font-bold">Welcome Back</h1>
-                        <p className="text-secondary">Sign in to continue to your account</p>
-                        <form onSubmit={handleLogin} className="space-y-5 flex flex-col items-center">
+                        <h1 className="text-primary-content text-3xl font-bold">Welcome Back</h1>
+                        <p className="text-secondary-content">Sign in to continue to your account</p>
+                        <form onSubmit={handleLogin} className="space-y-5 flex flex-col items-center ">
                             <div className='w-full'>
                                 <input
                                     type="text"
@@ -63,7 +67,7 @@ function Auth() {
                                 />
                             </div>
                             
-                            <button type="submit" disabled={isLoading} className="btn btn-outline btn-secondary ">{isLoading ? 'Logging in...' : 'Sign In'}</button>
+                            <button type="submit" disabled={isLoading} className="btn btn-base ">{isLoading ? 'Logging in...' : 'Sign In'}</button>
                             
                         </form>
                     </div>
@@ -71,8 +75,8 @@ function Auth() {
 
                 {activeTab === 'signup' && (
                     <div className="animate-fadeIn">
-                        <h2 className="text-primary text-3xl font-bold">Create Account</h2>
-                        <p className="text-secondary">Join us and start your journey</p>
+                        <h2 className="text-primary-content text-3xl font-bold">Create Account</h2>
+                        <p className="text-secondary-content">Join us and start your journey</p>
                         <form onSubmit={handleSignup} className="space-y-5 flex flex-col items-center">
                             <div className='w-full'>
                                 <input
@@ -121,13 +125,14 @@ function Auth() {
                             <button
                                 type="submit"
                                 disabled={isSignupLoading}
-                                className="btn btn-outline btn-secondary"
+                                className="btn btn-base"
                             >
                                 {isSignupLoading ? 'Signing up...' : 'Create Account'}
                             </button>
                         </form>
                     </div>
                 )}
+                
             </div>
 
             <style>{`
@@ -170,8 +175,8 @@ function Auth() {
                     animation: fadeIn 0.5s ease-out;
                 }
             `}</style>
-            <ToggleButton/>
-        </div>
+            </BackgroundBeamsWithCollision>
+            </div>
     );
 }
 

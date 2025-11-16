@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { postReview } from '../api/review';
+import toast from 'react-hot-toast';
 
 function useReview() {
     const [title, setTitle] = useState('');
@@ -21,20 +22,19 @@ function useReview() {
 
         postReview(title, text)
             .then((data) => {
-                console.log("Review submitted successfully:", data);
+                toast.success("Review submitted successfully!");
                 setTitle('');
                 setText('');
             })
             .catch((err) => {
                 console.error("Full server error response data:", err.response?.data);
-                // Attempt to extract a user-friendly error message
                 let errorMessage = "Submission failed.";
 
                 if (err.response && err.response.data) {
                     const firstError = Object.values(err.response.data)[0];
                     errorMessage = Array.isArray(firstError) ? firstError[0] : firstError;
                 }
-
+                toast.error(errorMessage);
                 setError(errorMessage);
             })
             .finally(() => {

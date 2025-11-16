@@ -4,7 +4,7 @@ import React from 'react';
 // Assuming you have Navbar and Footer imported from a shared layout path
 import Navbar from '../components/layout/Navbar.jsx';
 import Footer from '../components/layout/Footer.jsx';
-
+import StickyScroll from '../components/ui/StickyRollRevealContact.jsx';
 export default function Contact() {
 
     // Placeholder class names for styling based on the image
@@ -47,7 +47,7 @@ export default function Contact() {
                         </p>
                     </div>
                 </header>
-
+                    
                 {/* 2. Three-Column Info Cards Section */}
                 <section className="bg-white py-16">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-8">
