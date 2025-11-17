@@ -1,146 +1,124 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { useMotionValueEvent, useScroll } from "motion/react";
-import { motion } from "motion/react";
+import React, { useRef, useState, useEffect } from "react";
 import { cn } from "../../lib/utils";
 
-const content = [
-    {
-        title: "Collaborative Editing",
-        description:
-            "Work together in real time with your team, clients, and stakeholders. Collaborate on documents, share ideas, and make decisions quickly. With our platform, you can streamline your workflow and increase productivity.",
-        content: (
-            <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] text-white">
-                Collaborative Editing
-            </div>
-        ),
-    },
-    {
-        title: "Real time changes",
-        description:
-            "See changes as they happen. With our platform, you can track every modification in real time. No more confusion about the latest version of your project. Say goodbye to the chaos of version control and embrace the simplicity of real-time updates.",
-        content: (
-            <div className="flex h-full w-full items-center justify-center text-white">
-                <img
-                    src="/linear.webp"
-                    width={300}
-                    height={300}
-                    className="h-full w-full object-cover"
-                    alt="linear board demo"
-                />
-            </div>
-        ),
-    },
-    {
-        title: "Version control",
-        description:
-            "Experience real-time updates and never stress about version control again. Our platform ensures that you're always working on the most recent version of your project, eliminating the need for constant manual updates. Stay in the loop, keep your team aligned, and maintain the flow of your work without any interruptions.",
-        content: (
-            <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--orange-500),var(--yellow-500))] text-white">
-                Version control
-            </div>
-        ),
-    },
-    {
-        title: "Running out of content",
-        description:
-            "Experience real-time updates and never stress about version control again. Our platform ensures that you're always working on the most recent version of your project, eliminating the need for constant manual updates. Stay in the loop, keep your team aligned, and maintain the flow of your work without any interruptions.",
-        content: (
-            <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(to_bottom_right,var(--cyan-500),var(--emerald-500))] text-white">
-                Running out of content
-            </div>
-        ),
-    },
+
+
+const bgColors = ["bg-primary", "bg-secondary", "bg-accent"];
+const textColors = [
+    "text-primary-content",
+    "text-secondary-content",
+    "text-accent-content",
 ];
-const contentClassName = "shadow-lg shadow-black/20";
 
-export const StickyScroll = () => {
-    const [activeCard, setActiveCard] = React.useState(0);
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        // uncomment line 22 and comment line 23 if you DONT want the overflow container and want to have it change on the entire page scroll
-        // target: ref
-        container: ref,
-        offset: ["start start", "end start"],
-    });
-    const cardLength = content.length;
-
-    useMotionValueEvent(scrollYProgress, "change", (latest) => {
-        const cardsBreakpoints = content.map((_, index) => index / cardLength);
-        const closestBreakpointIndex = cardsBreakpoints.reduce((acc, breakpoint, index) => {
-            const distance = Math.abs(latest - breakpoint);
-            if (distance < Math.abs(latest - cardsBreakpoints[acc])) {
-                return index;
-            }
-            return acc;
-        }, 0);
-        setActiveCard(closestBreakpointIndex);
-    });
-
-    const backgroundColors = [
-        "#0f172a", // slate-900
-        "#000000", // black
-        "#171717", // neutral-900
-    ];
-    const linearGradients = [
-        "linear-gradient(to bottom right, #06b6d4, #10b981)", // cyan-500 to emerald-500
-        "linear-gradient(to bottom right, #ec4899, #6366f1)", // pink-500 to indigo-500
-        "linear-gradient(to bottom right, #f97316, #eab308)", // orange-500 to yellow-500
-    ];
-
-    const [backgroundGradient, setBackgroundGradient] = useState(linearGradients[0]);
+export const StickyScroll = ({content}) => {
+    const [activeCard, setActiveCard] = useState(0);
+    const containerRef = useRef(null);
+    const rafRef = useRef(null);
 
     useEffect(() => {
-        setBackgroundGradient(linearGradients[activeCard % linearGradients.length]);
-    }, [activeCard]);
+        const container = containerRef.current;
+        if (!container) return;
+
+        const cards = () => Array.from(container.querySelectorAll(".snap-start"));
+
+        const updateActiveByScroll = () => {
+            const c = container;
+            const list = cards();
+            if (!list.length) return;
+
+            const scrollTop = c.scrollTop;
+            // find card whose offsetTop is nearest to scrollTop
+            let bestIdx = 0;
+            let bestDiff = Infinity;
+
+            for (let i = 0; i < list.length; i++) {
+                const card = list[i];
+                const offset = card.offsetTop;
+                const diff = Math.abs(offset - scrollTop);
+                if (diff < bestDiff) {
+                    bestDiff = diff;
+                    bestIdx = i;
+                }
+            }
+
+            if (bestIdx !== activeCard) {
+                setActiveCard(bestIdx);
+            }
+        };
+
+        const onScroll = () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            rafRef.current = requestAnimationFrame(updateActiveByScroll);
+        };
+
+        // initialize once
+        updateActiveByScroll();
+        container.addEventListener("scroll", onScroll, { passive: true });
+
+        // also update on resize (in case layout changes)
+        const onResize = () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            rafRef.current = requestAnimationFrame(updateActiveByScroll);
+        };
+        window.addEventListener("resize", onResize);
+
+        return () => {
+            container.removeEventListener("scroll", onScroll);
+            window.removeEventListener("resize", onResize);
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [containerRef, activeCard]);
 
     return (
-        < div className="flex w-full items-center justify-center py-20">
-        <motion.div
-            animate={{
-                backgroundColor: backgroundColors[activeCard % backgroundColors.length],
-            }}
-            className="relative flex w-3/4 h-[30rem] justify-center space-x-10 overflow-y-auto rounded-md p-10"
-            ref={ref}>
-            <div className="div relative flex items-start px-4">
-                <div className="max-w-2xl">
+        <div className="flex w-full items-center justify-center py-20">
+            <div
+                ref={containerRef}
+                className={cn(
+                    "relative flex w-1/2 h-75 overflow-y-auto rounded-xl transition-colors duration-300 snap-y snap-mandatory",
+                    bgColors[activeCard]
+                )}
+            >
+                <div className="flex flex-col w-full px-10 py-10 space-y-10">
                     {content.map((item, index) => (
-                        <div key={item.title + index} className="my-20">
-                            <motion.h2
-                                initial={{
-                                    opacity: 0,
-                                }}
-                                animate={{
-                                    opacity: activeCard === index ? 1 : 0.3,
-                                }}
-                                className="text-2xl font-bold text-slate-100">
+                        <div
+                            key={index}
+                            className="snap-start min-h-75 flex flex-col justify-center"
+                        >
+                            <h2
+                                className={cn(
+                                    "text-4xl font-extrabold transition-opacity duration-300",
+                                    textColors[activeCard],
+                                    activeCard === index ? "opacity-100" : "opacity-40"
+                                )}
+                            >
                                 {item.title}
-                            </motion.h2>
-                            <motion.p
-                                initial={{
-                                    opacity: 0,
-                                }}
-                                animate={{
-                                    opacity: activeCard === index ? 1 : 0.3,
-                                }}
-                                className="text-kg mt-10 max-w-sm text-slate-300">
+                            </h2>
+
+                            <p
+                                className={cn(
+                                    "mt-6 text-base transition-opacity duration-300",
+                                    textColors[activeCard],
+                                    activeCard === index ? "opacity-100" : "opacity-40"
+                                )}
+                            >
                                 {item.description}
-                            </motion.p>
+                            </p>
                         </div>
                     ))}
-                    <div className="h-40" />
+                </div>
+
+                <div className="sticky top-10 hidden h-60 w-80 overflow-hidden rounded-xl shadow-xl bg-base-100 lg:block mx-10">
+                    <img
+                        src={content[activeCard].img}
+                        alt=""
+                        className="h-full w-full object-cover"
+                    />
                 </div>
             </div>
-            <div
-                style={{ background: backgroundGradient }}
-                className={cn(
-                    "sticky top-10 hidden h-60 w-80 overflow-hidden rounded-md bg-white lg:block",
-                    contentClassName
-                )}>
-                {content[activeCard].content ?? null}
-            </div>
-            </motion.div>
         </div>
     );
 };
+
 export default StickyScroll;

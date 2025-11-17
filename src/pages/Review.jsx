@@ -5,6 +5,7 @@ import Sidebar from '../components/layout/SideBar.jsx';
 import ReviewForm from '../components/ui/ReviewForm.jsx';
 import { getReviews } from '../api/review';
 import ToggleButton from '../components/ui/ToggleButton.jsx';
+import Navbar from '../components/layout/Navbar.jsx';
 
 export default function ReviewPage() {
     const [reviews, setReviews] = useState([]);
@@ -45,10 +46,11 @@ export default function ReviewPage() {
             <div className="absolute top-4 right-4 z-50 ">
                 <ToggleButton />
             </div>
+
             <div className="flex bg-base-200 overflow-hidden">
-                <div className="flex-none h-screen overflow-y-auto bg-base-300 motion-preset-slide-right motion-duration-2000 border-2 rounded-r-xl">
+                <div className="flex-none h-screen overflow-y-auto bg-base-300 motion-preset-slide-right motion-duration-2000 border-t-1 border-b-1 border-r-2 border-primary rounded-r-xl">
                     <Sidebar
-                        reviews={filteredReviews}
+                        reviews={filteredReviews}   
                         onSearchChange={setSearchTerm}
                         searchTerm={searchTerm}
                         isListLoading={isLoading}

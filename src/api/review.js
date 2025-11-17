@@ -8,7 +8,8 @@ export const postReview = async (title, text) => {
             title,
             text,
         }
-        , config);
+            , config);
+        console.log("Review submission response data:", response.data); 
         return response.data;
     } catch (error) {
         throw error;

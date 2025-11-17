@@ -21,6 +21,7 @@ export default function ToggleButton() {
     return (
         <label className="swap swap-rotate motion-preset-pulse motion-duration-2000" aria-label="Theme toggle">
             <input
+                id= "theme-toggle"
                 type="checkbox"
                 className="theme-controller"
                 value={DARK_THEME}

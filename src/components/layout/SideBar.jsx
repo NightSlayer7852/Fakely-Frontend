@@ -1,12 +1,10 @@
 // src/components/Sidebar.jsx
 
-import React from 'react';
-
 export default function Sidebar({ reviews, onSearchChange, searchTerm, isListLoading }) {
     const displayReviews = reviews || [];
 
     return (
-        <div className={`w-75 bg-base-300 border-r border-base-300 flex flex-col h-full  p-4 shadow-lg`}>
+        <div className={`w-75 bg-base-300 flex flex-col h-full  p-4 shadow-lg`}>
 
             <div className="mb-6 pb-2">
                 <h3 className={`text-lg font-semibold text-primary mb-2`}>Search Reviews</h3>
@@ -47,15 +45,15 @@ export default function Sidebar({ reviews, onSearchChange, searchTerm, isListLoa
                                 <dialog id={uniqueModalId} className="modal ">
                                     <div className="modal-box ">
                                         <div className='motion-scale-in-[0.5] motion-translate-x-in-[-40%] motion-translate-y-in-[37%] motion-opacity-in-[0%] motion-rotate-in-[-10deg] motion-blur-in-[5px] motion-duration-[0.35s] motion-duration-[0.53s]/scale motion-duration-[0.53s]/translate motion-duration-[0.63s]/rotate'>
-                                        <h3 className="font-bold text-lg">{review.title}</h3>
-                                        <p className="py-4">{review.text}</p>
-                                        <p className="text-xs text-primary">
-                                            Fake status: {review.is_fake ? 'DETECTED' : 'Genuine'}
+                                        <h3 className="font-bold text-xl text-bold text-base-content">{review.title}</h3>
+                                        <p className="py-4 text-base-content">{review.text}</p>
+                                        <p className="text-md text-base-content">
+                                                <b>Fake status:</b> {review.is_fake ? 'DETECTED' : 'Genuine'}
                                             </p>
                                         </div>
                                         <div className="modal-action">
                                             <form method="dialog">
-                                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-base-content">✕</button>
                                             </form>
                                         </div>
                                     </div>

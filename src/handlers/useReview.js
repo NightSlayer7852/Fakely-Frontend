@@ -27,6 +27,7 @@ function useReview() {
                 setText('');
             })
             .catch((err) => {
+                console.log("Review submission error:", err);
                 console.error("Full server error response data:", err.response?.data);
                 let errorMessage = "Submission failed.";
 

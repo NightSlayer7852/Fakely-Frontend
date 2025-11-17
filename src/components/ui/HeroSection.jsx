@@ -2,10 +2,10 @@ import { motion } from "motion/react";
 
 export function HeroSectionOne() {
     return (
-        <div className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
+        <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center">
             <div className="px-4 py-10 md:py-20">
-                <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-primary md:text-4xl lg:text-7xl">
-                    {"Launch your website in hours, not days"
+                <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-primary md:text-4xl lg:text-6xl">
+                    {"Authenticity Matters. Detect Fake Content in Seconds"
                         .split(" ")
                         .map((word, index) => (
                             <motion.span
@@ -22,17 +22,16 @@ export function HeroSectionOne() {
                                 {word}
                             </motion.span>
                         ))}
+                    
                 </h1>
 
                 <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3, delay: 0.8 }}
-                    className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-secondary"
+                    className="relative z-10 mx-auto max-w-2xl py-4 text-center text-lg font-normal text-base-content"
                 >
-                    With AI, you can launch your website in hours, not days. Try our
-                    best in class, state of the art, cutting edge AI tools to get your
-                    website up. 
+                    From social posts to articles, our AI inspects content deeply to reveal hidden patterns, inconsistencies, and synthetic fingerprints. Verify anything with one click.
                 </motion.p>
             </div>
         </div>
