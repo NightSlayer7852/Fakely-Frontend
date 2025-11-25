@@ -23,6 +23,7 @@ function useReview() {
         postReview(title, text)
             .then((data) => {
                 toast.success("Review submitted successfully!");
+                console.log("Review submission response data:", data);
                 setTitle('');
                 setText('');
             })

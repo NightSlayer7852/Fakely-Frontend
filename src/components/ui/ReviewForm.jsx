@@ -34,7 +34,7 @@ export default function ReviewForm({ onReviewSubmitted }) {
 
                 <input
                     type="text"
-                    placeholder="Title"
+                    placeholder="Category"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className={`input input-secondary w-full`}
@@ -42,7 +42,7 @@ export default function ReviewForm({ onReviewSubmitted }) {
                 />
 
                 <textarea
-                    placeholder="Review Text"
+                    placeholder="Review"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     className={`textarea textarea-secondary w-full h-40`}

@@ -9,7 +9,8 @@ import Home from './pages/Home.jsx'; // Example protected content
 import About from './pages/About.jsx'; // Example protected content
 import Contact from './pages/Contact.jsx'; // Example protected content
 import Profile from './pages/Profile.jsx'; // Protected Profile page
-
+import Law from './pages/Law.jsx'; // Protected Law Enforcement Support page
+import Reputation from './pages/Reputation.jsx'; // Protected Corporate Reputation Management page
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
               <Route path="/review" element={<Review />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/law" element={<Law />} />
+              <Route path="/reputation" element={<Reputation />} />
             </Route>
 
             <Route path="*" element={<h1>404 Not Found</h1>} />

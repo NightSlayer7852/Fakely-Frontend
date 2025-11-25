@@ -1,22 +1,26 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { User, UserStar } from 'lucide-react';
+import { User, UserStar, Building2, Newspaper } from 'lucide-react';
+
 export const projects = [
     {
         title: "E-Commerce Review Verification",
         description: "Spot fake, bot-made, or deceptive product reviews to maintain buyer trust.",
         link: "/review",
+        icon: <UserStar />,
     },
     {
-        title: "Review",
-        description: "A web app that allows users to practice for front-end and UI interviews.",
-        link: "/about",
+        title: "Fake News Detection",
+        description: "Detecting fake news for authentic circulation of news.",
+        link: "/reputation",    
+        icon: <Newspaper />,
     },
     {
-        title: "Review",
-        description: "A web app that allows users to practice for front-end and UI interviews.",
-        link: "/contact",
+        title: "Corporate Reputation Management",
+        description: "Managing your company's rep, influencing public perception, and protecting your brand image.",
+        link: "/reputation",
+        icon: <Building2 />,
     },
 ];
 
@@ -55,7 +59,9 @@ export const HoverEffect = () => {
                                     <h4 className="text-secondary-content text-xl font-bold tracking-wide mt-4">
                                         {project.title}
                                     </h4>
-                                    <UserStar className="text-secondary-content w-8 h-8 " />
+                                    <div className="h-7 w-7 text-secondary-content">
+                                        {project.icon}
+                                    </div>
 
                                     </div>
                                 <p className="mt-8 text-secondary-content opacity-80 leading-relaxed text-sm">
